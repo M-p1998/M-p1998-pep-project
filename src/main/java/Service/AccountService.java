@@ -110,28 +110,34 @@ public class AccountService {
     //     }
     // }
 
-    public Account loginValidation(Account acc){
+    public Account loginValidation(Account acc) throws SQLException{
         String username = acc.getUsername().trim();
         String password = acc.getPassword().trim();
-        try {
+        // try {
             // Retrieve account from database
-            Account account = accountDAO.login(username, password);
-            if (account == null) {
-                System.out.println("Account not found for username: " + username);
-                return null;
-            }
+            // Account account = accountDAO.login(username, password);
+            // return account;
+            // if (account == null) {
+            //     System.out.println("Account not found for username: " + username);
+            //     return null;
+            // }
 
             // Validate password
-            if (account.getPassword().equals(password)) {
-                System.out.println("Login successful for username: " + username);
-                return account;
-            } else {
-                System.out.println("Invalid password for username: " + username);
-                return null;
-            }
+            // if (account.getPassword().equals(password)) {
+            //     System.out.println("Login successful for username: " + username);
+            //     return account;
+            // } else {
+            //     System.out.println("Invalid password for username: " + username);
+            //     return null;
+            // }
+        // } catch (SQLException e) {
+        //     throw new SQLException("Validation login failed: " + e.getMessage());
+        // }
+        try {
+            Account account = accountDAO.login(username, password);
+            return account;
         } catch (Exception e) {
-            System.out.println("Login failed: " + e.getMessage());
-            return null;
+            throw new SQLException("Validation login failed: " + e.getMessage());
         }
     }
 

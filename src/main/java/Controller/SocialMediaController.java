@@ -93,25 +93,43 @@ public class SocialMediaController {
     }
 
     private void loginController(Context ctx) throws JsonProcessingException{
-        String username = ctx.formParam("username");
-        String password = ctx.formParam("password");
-        ObjectMapper mapper = new ObjectMapper();
-        Account acc = mapper.readValue(ctx.body(),Account.class);
-        // validate input
+        // String username = ctx.formParam("username");
+        // String password = ctx.formParam("password");
+        // ObjectMapper mapper = new ObjectMapper();
+        // Account acc = mapper.readValue(ctx.body(),Account.class);
+        // // validate input
+        // try {
+        //     Account loggedInAccount = accountService.loginValidation(acc);
+        //     if(loggedInAccount != null){
+        //         ctx.status(200).json(loggedInAccount);
+        //     } else {
+        //         ctx.status(401).json("Invalid username or password.");
+        //     }
+        // } catch (Exception e) {
+        //     ctx.status(401).json("Login failed" + e.getMessage());
+        // }
         try {
+            ObjectMapper mapper = new ObjectMapper();
+            Account acc = mapper.readValue(ctx.body(), Account.class);
+
+            // Validate input
+            if (acc.getUsername() == null || acc.getUsername().trim().isEmpty() ||
+                acc.getPassword() == null || acc.getPassword().isEmpty()) {
+                ctx.status(400).json("Username and password must be provided.");
+                return;
+            }
+
+            // Perform login validation
             Account loggedInAccount = accountService.loginValidation(acc);
-            if(loggedInAccount != null){
+            if (loggedInAccount != null) {
                 ctx.status(200).json(loggedInAccount);
             } else {
                 ctx.status(401).json("Invalid username or password.");
             }
         } catch (Exception e) {
-            ctx.status(401).json("Login failed" + e.getMessage());
+            ctx.status(401).json("Login failed: " + e.getMessage());
         }
-        // if(username == null || username.trim().isEmpty() || password == null || password.isEmpty()){
-        //     ctx.status(400);
-        //     ctx.json("Username and password must be provided.");
-        // }
+
     }
 
 

@@ -148,13 +148,17 @@ public class AccountDAO {
 
                 int accountId = rs.getInt("account_id");
                 String fetchedUsername = rs.getString("username");
-                String hashedPassword = rs.getString("password"); // Assuming password is hashed in the database
+                String storedPassword = rs.getString("password"); // Assuming password is hashed in the database
 
                 // Example of password validation using BCrypt
                 // Replace this with your actual password hashing/validation mechanism
-                if (BCrypt.checkpw(password, hashedPassword)) {
+                // if (BCrypt.checkpw(password, hashedPassword)) {
+                //     loggedInAccount = new Account(accountId, fetchedUsername, null); 
+                // } 
+                if(password.equals(storedPassword)){
                     loggedInAccount = new Account(accountId, fetchedUsername, null); 
-                } 
+                }
+
                 // else {
                 //     System.out.println("Password does not match.");
                 // }
