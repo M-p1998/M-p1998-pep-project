@@ -66,29 +66,29 @@ public class SocialMediaController {
         //     // Account newAcc = new Account(username,password);
         //     accountService.registerValidation(acc);
         //     Account registeredAccount = accountService.createAccount(acc);
-        //     if(registeredAccount != null){
+        //     // if(registeredAccount != null){
         //         ctx.json(mapper.writeValueAsString(registeredAccount));
-        //     }
+        //     // }
         //     // ctx.status(200).json(registeredAccount);
-        //     ctx.json("Account registered successfully.");
+        //     // ctx.json("Account registered successfully.");
         // } catch (Exception e) {
-        //     ctx.status(400).json(e.getMessage());
+        //     ctx.status(400);
         // }
         try {
             // Deserialize JSON body to Account object
             ObjectMapper mapper = new ObjectMapper();
             Account acc = mapper.readValue(ctx.body(), Account.class);
-    
-            // Validate and register account
+
             accountService.registerValidation(acc);
             // Account registeredAccount = accountService.createAccount(acc);
-    
-            // Successful registration response
+
             ctx.status(200).json(acc);
         } catch (SQLException e) {
-            ctx.status(400).json("SQL Exception occurred: " + e.getMessage());
+            // ctx.status(400).json("SQL Exception occurred: " + e.getMessage());
+            ctx.status(400);
         } catch (Exception e) {
-            ctx.status(400).json("Exception occurred: " + e.getMessage());
+            // ctx.status(400).json("Exception occurred: " + e.getMessage());
+            ctx.status(400);
         }
     }
 
