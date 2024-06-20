@@ -156,7 +156,7 @@ public class AccountDAO {
                 //     loggedInAccount = new Account(accountId, fetchedUsername, null); 
                 // } 
                 if(password.equals(storedPassword)){
-                    loggedInAccount = new Account(accountId, fetchedUsername, null); 
+                    loggedInAccount = new Account(accountId, fetchedUsername, storedPassword); 
                 }
 
                 // else {
