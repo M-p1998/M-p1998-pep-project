@@ -1,5 +1,6 @@
 package Controller;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -59,16 +60,35 @@ public class SocialMediaController {
         String username = ctx.formParam("username");
         String password = ctx.formParam("password");
            
+        // try {
+        //     ObjectMapper mapper = new ObjectMapper();
+        //     Account acc = mapper.readValue(ctx.body(),Account.class);
+        //     // Account newAcc = new Account(username,password);
+        //     accountService.registerValidation(acc);
+        //     Account registeredAccount = accountService.createAccount(acc);
+        //     if(registeredAccount != null){
+        //         ctx.json(mapper.writeValueAsString(registeredAccount));
+        //     }
+        //     // ctx.status(200).json(registeredAccount);
+        //     ctx.json("Account registered successfully.");
+        // } catch (Exception e) {
+        //     ctx.status(400).json(e.getMessage());
+        // }
         try {
+            // Deserialize JSON body to Account object
             ObjectMapper mapper = new ObjectMapper();
-            Account acc = mapper.readValue(ctx.body(),Account.class);
-            // Account newAcc = new Account(username,password);
+            Account acc = mapper.readValue(ctx.body(), Account.class);
+    
+            // Validate and register account
             accountService.registerValidation(acc);
             // Account registeredAccount = accountService.createAccount(acc);
+    
+            // Successful registration response
             ctx.status(200).json(acc);
-            ctx.json("Account registered successfully.");
+        } catch (SQLException e) {
+            ctx.status(400).json("SQL Exception occurred: " + e.getMessage());
         } catch (Exception e) {
-            ctx.status(400).json(e.getMessage());
+            ctx.status(400).json("Exception occurred: " + e.getMessage());
         }
     }
 

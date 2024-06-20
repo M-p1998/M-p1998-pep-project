@@ -1,6 +1,7 @@
 package Service;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 import javax.swing.text.html.Option;
@@ -137,16 +138,38 @@ public class AccountService {
     // help to show json response body when registeration
     public Account createAccount(Account acc) throws Exception{
         String username = acc.getUsername().trim();
+        // try {
+        //     // registerValidation(acc);
+        //     Account accInDatabase = accountDAO.getAccountByUserName(username);
+        //     if(accInDatabase != null){
+        //         throw new SQLException("Account with username '" + username + "' already exists.");
+        //     }
+        //     Account createdAccount = accountDAO.insertUser(acc);
+        //     return createdAccount;
+        // } catch (SQLException e) {
+        //     throw new SQLException("Exception occurred while creating account", e);
+        // } 
         try {
-            registerValidation(acc);
+            // Validate if account with the same username already exists
             Account accInDatabase = accountDAO.getAccountByUserName(username);
-            if(accInDatabase != null){
+            if (accInDatabase != null) {
                 throw new SQLException("Account with username '" + username + "' already exists.");
             }
+            
+            // Proceed with account insertion if validation passes
             Account createdAccount = accountDAO.insertUser(acc);
+            System.out.println("Account created successfully: " + createdAccount.getUsername());
             return createdAccount;
         } catch (SQLException e) {
-            throw new SQLException("Exception occurred while creating account", e);
-        }   
+            System.out.println("SQL Exception occurred: " + e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            System.out.println("Exception occurred: " + e.getMessage());
+            throw e;
+        }    
     }
+
+
+
+
 }
