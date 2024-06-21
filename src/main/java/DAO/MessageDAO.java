@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,20 +37,47 @@ public class MessageDAO {
     // create a message
     public Message insertMessage(Message msg){
         Connection connect = ConnectionUtil.getConnection();
+        Message message = null;
         try {
             String sql = "INSERT INTO message (posted_by,message_text,time_posted_epoch) VALUES (?,?,?)";
-            PreparedStatement preparedStatement = connect.prepareStatement(sql);
+            PreparedStatement preparedStatement = connect.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             preparedStatement.setInt(1, msg.getPosted_by());
             preparedStatement.setString(2, msg.getMessage_text());
             preparedStatement.setLong(3, msg.getTime_posted_epoch());
-            preparedStatement.executeUpdate();
-            return msg;
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if( affectedRows > 0){
+                try(ResultSet generatedKeys = preparedStatement.getGeneratedKeys()){
+                    if (generatedKeys.next()) {
+                        
+                        int messageId = generatedKeys.getInt(1);
+                        // msg.setMessage_id(generatedKeys.getInt(1));
+                        message = new Message(messageId, msg.getPosted_by(),msg.getMessage_text(),msg.getTime_posted_epoch());
+                    }
+                }
+            }
+            
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return null;
+        return message;
     }
+
+
+
 
     
 }
+
+// if(affectedRows > 0){
+//     try(ResultSet generatedKeys = stmt.getGeneratedKeys()){
+//         if (generatedKeys.next()) {
+            
+//             // int accountId = generatedKeys.getInt(1);
+//             acc.setAccount_id(generatedKeys.getInt(1));
+//             registeredAccount = new Account(acc.getUsername(),acc.getPassword());
+//         }
+//     }
+// }

@@ -104,7 +104,27 @@ public class AccountDAO {
             throw new Exception("Account with this username not found.");
         }
         return account;
-    }   
+    }
+    
+    public Account getByUserId(int id) throws SQLException{
+        Connection connection = ConnectionUtil.getConnection();
+        String sql = "SELECT * FROM account WHERE account_id = ?";
+        Account account = null;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                int accountId = rs.getInt("account_id");
+                String userName = rs.getString("username");
+                String password = rs.getString("password");
+                account = new Account(accountId, userName, password);
+            }
+        } catch (Exception e) {
+            throw new SQLException("Error occured while retrieving user id.");
+        }
+        return account;
+    }
 
     // check if username and password match the account in database
     public Account login(String username, String password){

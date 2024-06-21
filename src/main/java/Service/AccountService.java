@@ -175,6 +175,14 @@ public class AccountService {
         }    
     }
 
+    public Account getAccountByUserId(int id) throws Exception {
+        try {
+            Account account = accountDAO.getByUserId(id);
+            return account;
+        } catch (Exception e) {
+            throw new Exception("Error occurred while fetching account", e);
+        }
+    }
 
 
 
