@@ -32,13 +32,14 @@ public class SocialMediaController {
         this.messageService = new MessageService();
         this.accountService = new AccountService();
     }
+
     public Javalin startAPI() {
         Javalin app = Javalin.create();
         app.post("/register", this::registerAccController);
         app.post("/login", this::loginController);
         app.get("/messages", this::getAllMessagesController);
         app.post("/messages", this::createMessageController);
-        // app.get("/messages/{message_id}", this::messageById);
+        app.get("/messages/{message_id}", this::getMessageByMessageIdController);
         // app.delete("/messages/{message_id}", this::messageById);
         // app.patch("/messages/{message_id}", this::messageById);
         // app.get("/accounts/{account_id}/messages", this::messageByUserId);
@@ -128,7 +129,24 @@ public class SocialMediaController {
         ctx.json(messages);
     }
 
-    
+    // retrieve message by its id
+    public void getMessageByMessageIdController(Context ctx){
 
+        try {
+            int messageId = Integer.parseInt(ctx.pathParam("message_id"));
+            Message msg = messageService.getMsgByMsgId(messageId);
+            if(msg != null){
 
+                ctx.json(msg);
+                
+            }else{
+                ctx.status(200);
+                ctx.result("");
+            }
+            
+        } catch (Exception e) {
+            ctx.status(400);
+        }
+
+    }
 }

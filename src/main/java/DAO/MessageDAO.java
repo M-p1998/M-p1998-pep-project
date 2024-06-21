@@ -65,25 +65,27 @@ public class MessageDAO {
         return message;
     }
 
-    // public List<Message> getAllMessages(){
-    //     Connection connect = ConnectionUtil.getConnection();
-    //     String sql = "SELECT * FROM message;";
-    //     List<Message> messages = new ArrayList<>();
-    //     PreparedStatement stmt = connect.prepareStatement(sql);
-    //     ResultSet rs = stmt.executeQuery();
-    //     try {
-    //         while(rs.next()){
-    //             Message msg = new Message(rs.getInt("message_id"),
-    //                     rs.getInt("posted_by"),
-    //                     rs.getString("message_text"),
-    //                     rs.getLong("time_posted_epoch")
-    //             );
-    //         }
-    //     } catch (Exception e) {
-    //         throw new Exception("Error occured while retrieving all messages.");
-    //     }
-    //     return messages;
-    // }
+    // get a message by its id
+    public Message getMessageByItsId(int id) throws SQLException{
+        Connection connect = ConnectionUtil.getConnection();
+        Message message = null;
+        String sql = "SELECT * FROM message WHERE message_id = ?";
+        PreparedStatement preparedStatement = connect.prepareStatement(sql);
+        preparedStatement.setInt(1, id);
+        ResultSet rs = preparedStatement.executeQuery();    
+        try {
+            if (rs.next()) {
+                int messageId = rs.getInt("message_id");
+                int postedBy = rs.getInt("posted_by");
+                String textMessage = rs.getString("message_text");
+                long timePostedEpoch = rs.getLong("time_posted_epoch");
+                message = new Message(messageId, postedBy, textMessage, timePostedEpoch);
+            }
+        } catch (Exception e) {
+            throw new SQLException("Error occured while retrieving message by its id.");
+        }
+        return message;
+    }
 
 
     

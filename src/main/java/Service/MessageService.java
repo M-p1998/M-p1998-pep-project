@@ -56,20 +56,21 @@ public class MessageService {
        
     }
 
-    // private boolean checkIfUserExists(int userId) throws SQLException {
-    //     Connection connection = ConnectionUtil.getConnection();
-    //     String sql = "SELECT COUNT(*) FROM Account WHERE account_id = ?";
-    //     try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-    //         stmt.setInt(1, userId);
-    //         try (ResultSet rs = stmt.executeQuery()) {
-    //             if (rs.next()) {
-    //                 int count = rs.getInt(1);
-    //                 return count > 0;
-    //             }
-    //         }
-    //     }
-    //     return false;
-    // }
 
+    // get message by message id
+    public Message getMsgByMsgId(int id) throws Exception{
+        try {
+            Message message = msgDAO.getMessageByItsId(id);
+            if(message == null){
+                throw new Exception("Message not found while retrieving by its id ");
+            }
+            return message;
+        } catch (Exception e) {
+            throw new Exception("Error occurred while fetching message by its id ", e);
+        }
+
+    }
    
 }
+
+
