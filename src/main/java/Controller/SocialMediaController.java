@@ -3,6 +3,8 @@ package Controller;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.junit.rules.ExpectedException;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -144,9 +146,14 @@ public class SocialMediaController {
                 ctx.result("");
             }
             
-        } catch (Exception e) {
-            ctx.status(400);
-        }
+            } catch (Exception e) {
+                ctx.status(200);
+                ctx.result("");
+            }
+            // catch (Exception e){
+            //     ctx.status(200);
+            //     ctx.result("");
+            // }
 
     }
 }
