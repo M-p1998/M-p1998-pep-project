@@ -69,6 +69,20 @@ public class MessageService {
         }
 
     }
+
+    // get messages by user/account id
+    public List<Message> getMsgByUserId(int id) throws Exception{
+        try {
+            List<Message> message = msgDAO.getMessagesByUserId(id);
+            if(message == null){
+                throw new Exception("Message not found while retrieving by user/account id ");
+            }
+            return message;
+        } catch (Exception e) {
+            throw new Exception("Error occurred while fetching message by user/account id ", e);
+        }
+    }
+
     // delete message by message id
    public void deleteMessage(Message msg) throws Exception{
         msgDAO.deleteMessageByItsId(msg);
@@ -79,7 +93,6 @@ public class MessageService {
     //      }
     // }
    }
-
 
     // update message by message id
     public Message updateMessage(Message message) throws Exception{

@@ -45,7 +45,7 @@ public class SocialMediaController {
         app.get("/messages/{message_id}", this::getMessageByMessageIdController);
         app.delete("/messages/{message_id}", this::deleteMessageController);
         app.patch("/messages/{message_id}", this::updateMessageController);
-        // app.get("/accounts/{account_id}/messages", this::messageByUserId);
+        app.get("/accounts/{account_id}/messages", this::getMessageByUserIdController);
         // app.start(8080);
         System.out.println("javalin app started successfully on port 8080");
         return app;
@@ -151,10 +151,31 @@ public class SocialMediaController {
                 ctx.status(200);
                 ctx.result("");
             }
-            // catch (Exception e){
-            //     ctx.status(200);
-            //     ctx.result("");
-            // }
+
+    }
+
+    // retrieve message by user/account id
+    public void getMessageByUserIdController(Context ctx){
+
+        try {
+            int accountId = Integer.parseInt(ctx.pathParam("account_id"));
+            List<Message> msg = messageService.getMsgByUserId(accountId);
+            if(msg != null){
+                ctx.json(msg);
+                
+            }else{
+                ctx.status(200);
+                ctx.result("");
+            }
+            
+        } catch (Exception e) {
+            ctx.status(200);
+            ctx.result("");
+        }
+        // catch (Exception e){
+        //     ctx.status(200);
+        //     ctx.result("");
+        // }
 
     }
 
