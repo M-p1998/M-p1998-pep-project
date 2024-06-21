@@ -72,15 +72,16 @@ public class MessageService {
 
     // get messages by user/account id
     public List<Message> getMsgByUserId(int id) throws Exception{
-        try {
-            List<Message> message = msgDAO.getMessagesByUserId(id);
-            if(message == null){
-                throw new Exception("Message not found while retrieving by user/account id ");
-            }
-            return message;
-        } catch (Exception e) {
-            throw new Exception("Error occurred while fetching message by user/account id ", e);
-        }
+        // try {
+        //     List<Message> message = msgDAO.getMessagesByUserId(id);
+        //     if(message.isEmpty()){
+        //         throw new Exception("No messages found for user/account id");
+        //     }
+        //     return message;
+        // } catch (Exception e) {
+        //     throw new Exception("Error occurred while fetching message by user/account id ", e);
+        // }
+        return msgDAO.getMessagesByUserId(id);
     }
 
     // delete message by message id

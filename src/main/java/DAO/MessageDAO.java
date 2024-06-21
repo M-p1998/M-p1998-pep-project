@@ -90,24 +90,26 @@ public class MessageDAO {
     // get all messages by accountId/userId
     public List<Message> getMessagesByUserId(int id) throws SQLException{
         Connection connect = ConnectionUtil.getConnection();
-        // List <Message> messages = new ArrayList<>();
-        String sql = "SELECT * FROM message WHERE posted_id = ?";
+        List <Message> messages = new ArrayList<>();
+        String sql = "SELECT * FROM message WHERE posted_by = ?";
         PreparedStatement preparedStatement = connect.prepareStatement(sql);
         preparedStatement.setInt(1, id);
         ResultSet rs = preparedStatement.executeQuery();
         try {
-            if (rs.next()) {
+            // use while to loop through result set (to get ALL messages by account id)
+            while (rs.next()) {
                 int messageId = rs.getInt("message_id");
                 int postedBy = rs.getInt("posted_by");
                 String textMessage = rs.getString("message_text");
                 long timePostedEpoch = rs.getLong("time_posted_epoch");
-                new Message(messageId, postedBy, textMessage, timePostedEpoch);
+                Message message = new Message(messageId, postedBy, textMessage, timePostedEpoch);
+                messages.add(message);
             }
         } catch (Exception e) {
             throw new SQLException("Error occured while retrieving message by user/account id.");
         }   
-        // return messages;
-        return new ArrayList<>();
+        return messages;
+        // return new ArrayList<>();
     }
 
     // delete a messag by its id

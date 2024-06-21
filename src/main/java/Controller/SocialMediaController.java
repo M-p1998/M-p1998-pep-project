@@ -1,6 +1,7 @@
 package Controller;
 
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.rules.ExpectedException;
@@ -151,31 +152,49 @@ public class SocialMediaController {
                 ctx.status(200);
                 ctx.result("");
             }
-
+            
     }
 
     // retrieve message by user/account id
     public void getMessageByUserIdController(Context ctx){
 
+        // try {
+        //     int accountId = Integer.parseInt(ctx.pathParam("account_id"));
+        //     List<Message> msg = messageService.getMsgByUserId(accountId);
+        //     if(!msg.isEmpty()){
+        //         ctx.json(msg);
+        //         ctx.status(200);
+        //     }else{
+        //         ctx.status(200);
+        //         ctx.json(Collections.emptyList());
+        //     }
+            
+        // } catch (Exception e) {
+        //     ctx.status(200);
+        //     ctx.result("Invalid account id");
+        // }
         try {
             int accountId = Integer.parseInt(ctx.pathParam("account_id"));
-            List<Message> msg = messageService.getMsgByUserId(accountId);
-            if(msg != null){
-                ctx.json(msg);
-                
-            }else{
+            List<Message> messages = messageService.getMsgByUserId(accountId);
+    
+            if (!messages.isEmpty()) {
+                ctx.json(messages);
+                // ctx.status(200); 
+            } else {
+                ctx.json(messages); // Still return 200 OK for an empty list
+                // ctx.json(Collections.emptyList()); // Return an empty list in JSON
                 ctx.status(200);
-                ctx.result("");
             }
-            
-        } catch (Exception e) {
-            ctx.status(200);
-            ctx.result("");
+    
+        } catch (SQLException e) {
+            ctx.status(200); // Bad request if account_id is not a valid integer
+            ctx.result("Invalid account_id format");
         }
-        // catch (Exception e){
-        //     ctx.status(200);
-        //     ctx.result("");
-        // }
+         catch (Exception e) {
+            ctx.status(400); // Internal Server Error for unexpected exceptions
+            ctx.result("Internal server error");
+        }
+
 
     }
 
