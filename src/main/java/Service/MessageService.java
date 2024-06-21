@@ -79,19 +79,23 @@ public class MessageService {
     //      }
     // }
    }
+
+
+    // update message by message id
+    public Message updateMessage(Message message) throws Exception{
+        Message updatedMessage = getMsgByMsgId(message.getMessage_id());
+        if(updatedMessage == null){
+            throw new Exception("Message not found.");
+        }
+        updatedMessage.setMessage_text(message.getMessage_text());
+        messageValidation(message);
+        try {
+            msgDAO.updateMessageByItsId(updatedMessage);
+            return updatedMessage;
+        } catch (Exception e) {
+            throw new Exception("Error occurred while updating the message.", e);
+        }
+    }
 }
-// public void deleteMessage(Message message) {
-//     LOGGER.info("Deleting message: {}", message);
-//     try {
-//         boolean hasDeletedMessage = messageDao.delete(message);
-//         if (hasDeletedMessage) {
-//             LOGGER.info("Deleted message {}", message);
-//         } else {
-//             throw new NotFoundResponse("Message to delete not found");
-//         }
-//     } catch (DaoException e) {
-//         throw new ServiceException(DB_ACCESS_ERROR_MSG, e);
-//     }
-// }
 
 

@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.rules.ExpectedException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Model.Account;
@@ -43,7 +44,7 @@ public class SocialMediaController {
         app.post("/messages", this::createMessageController);
         app.get("/messages/{message_id}", this::getMessageByMessageIdController);
         app.delete("/messages/{message_id}", this::deleteMessageController);
-        // app.patch("/messages/{message_id}", this::messageById);
+        app.patch("/messages/{message_id}", this::updateMessageController);
         // app.get("/accounts/{account_id}/messages", this::messageByUserId);
         // app.start(8080);
         System.out.println("javalin app started successfully on port 8080");
@@ -173,4 +174,40 @@ public class SocialMediaController {
             ctx.status(200);
         }
     }
+
+    public void updateMessageController(Context ctx) throws JsonMappingException, JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
+        Message message = mapper.readValue(ctx.body(),Message.class);
+        
+        try {
+            int messageId = Integer.parseInt(ctx.pathParam("message_id"));
+            message.setMessage_id(messageId);
+            Message updatedMsg = messageService.updateMessage(message);
+            ctx.json(updatedMsg);
+
+        } catch (Exception e) {
+            ctx.status(400);
+        }
+    }
 }
+// public void updateMessageTextController(Context ctx) {
+//     try {
+//         // Parse message_id from path parameter
+//         int messageId = Integer.parseInt(ctx.pathParam("message_id"));
+
+//         // Deserialize JSON body to a map or use directly if body contains just the new message text
+//         String newMessageText = ctx.body();
+
+//         // Update the message text
+//         messageService.updateMessageText(messageId, newMessageText);
+
+//         // Set HTTP response status 204 (No Content) for successful update
+//         ctx.status(204);
+//     } catch (NumberFormatException e) {
+//         // Handle invalid message_id format
+//         ctx.status(400).result("Invalid message_id");
+//     } catch (Exception e) {
+//         // Handle other exceptions
+//         ctx.status(500).result("Internal server error");
+//     }
+// }

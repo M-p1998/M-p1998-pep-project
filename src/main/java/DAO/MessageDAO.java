@@ -90,7 +90,6 @@ public class MessageDAO {
     // delete a messag by its id
     public void deleteMessageByItsId(Message msg) throws Exception{
         Connection connect = ConnectionUtil.getConnection();
-        // Message message = null;
         String sql = "DELETE FROM message WHERE message_id = ?";
         PreparedStatement preparedStatement = connect.prepareStatement(sql);
         try {
@@ -100,6 +99,22 @@ public class MessageDAO {
             throw new Exception("Error occured while deleting a message by its id", e);
         }
         
+    }
+
+    public void updateMessageByItsId(Message message) throws Exception{
+        Connection connect = ConnectionUtil.getConnection();
+        String sql = "UPDATE message SET posted_by = ?, message_text = ?, time_posted_epoch = ? WHERE message_id = ?";
+        PreparedStatement preparedStatement = connect.prepareStatement(sql);
+        try {
+            preparedStatement.setInt(1, message.getPosted_by());
+            preparedStatement.setString(2, message.getMessage_text());
+            preparedStatement.setLong(3, message.getTime_posted_epoch());
+            // to get update messages when retrieve with GET method
+            preparedStatement.setInt(4, message.getMessage_id());
+            preparedStatement.executeUpdate();  
+        } catch (SQLException e) {
+            throw new SQLException("Error occured while updating a message by its id", e);
+        }
     }
 
     // @Override
