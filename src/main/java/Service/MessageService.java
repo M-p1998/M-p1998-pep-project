@@ -56,7 +56,6 @@ public class MessageService {
        
     }
 
-
     // get message by message id
     public Message getMsgByMsgId(int id) throws Exception{
         try {
@@ -70,7 +69,29 @@ public class MessageService {
         }
 
     }
-   
+    // delete message by message id
+   public void deleteMessage(Message msg) throws Exception{
+        msgDAO.deleteMessageByItsId(msg);
+    // try{
+    //      message = msgDAO.deleteMessageByItsId(id);
+    //      if(message == null){
+
+    //      }
+    // }
+   }
 }
+// public void deleteMessage(Message message) {
+//     LOGGER.info("Deleting message: {}", message);
+//     try {
+//         boolean hasDeletedMessage = messageDao.delete(message);
+//         if (hasDeletedMessage) {
+//             LOGGER.info("Deleted message {}", message);
+//         } else {
+//             throw new NotFoundResponse("Message to delete not found");
+//         }
+//     } catch (DaoException e) {
+//         throw new ServiceException(DB_ACCESS_ERROR_MSG, e);
+//     }
+// }
 
 

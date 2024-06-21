@@ -87,7 +87,34 @@ public class MessageDAO {
         return message;
     }
 
+    // delete a messag by its id
+    public void deleteMessageByItsId(Message msg) throws Exception{
+        Connection connect = ConnectionUtil.getConnection();
+        // Message message = null;
+        String sql = "DELETE FROM message WHERE message_id = ?";
+        PreparedStatement preparedStatement = connect.prepareStatement(sql);
+        try {
+            preparedStatement.setInt(1, msg.getMessage_id());
+            preparedStatement.executeUpdate();  
+        } catch (Exception e) {
+            throw new Exception("Error occured while deleting a message by its id", e);
+        }
+        
+    }
 
+    // @Override
+    // public boolean delete(Message message) {
+    //     String sql = "DELETE FROM message WHERE message_id = ?";
+    //     int rowsUpdated = 0;
+    //     Connection conn = ConnectionUtil.getConnection();
+    //     try (PreparedStatement ps = conn.prepareStatement(sql)) {
+    //         ps.setInt(1, message.getMessage_id());
+    //         rowsUpdated = ps.executeUpdate();
+    //     } catch (SQLException e) {
+    //         handleSQLException(e, sql, "Error while deleting the message with id: " + message.getMessage_id());
+    //     }
+    //     return rowsUpdated > 0;
+    // }
     
 }
 
