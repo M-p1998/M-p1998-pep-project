@@ -36,7 +36,7 @@ public class SocialMediaController {
         Javalin app = Javalin.create();
         app.post("/register", this::registerAccController);
         app.post("/login", this::loginController);
-        // app.get("/messages", this::getAllMessagesController);
+        app.get("/messages", this::getAllMessagesController);
         app.post("/messages", this::createMessageController);
         // app.get("/messages/{message_id}", this::messageById);
         // app.delete("/messages/{message_id}", this::messageById);
@@ -123,9 +123,10 @@ public class SocialMediaController {
         }
     }
 
-    // private void getAllMessagesController(Context ctx){
-    //      ctx.json(MessageService.ListMessages());
-    // }
+    private void getAllMessagesController(Context ctx){
+        List<Message> messages = messageService.ListMessages();
+        ctx.json(messages);
+    }
 
     
 
