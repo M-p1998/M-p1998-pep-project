@@ -115,7 +115,8 @@ public class SocialMediaController {
             // Validate input
             if (acc.getUsername() == null || acc.getUsername().trim().isEmpty() ||
                 acc.getPassword() == null || acc.getPassword().isEmpty()) {
-                ctx.status(400).json("Username and password must be provided.");
+                // ctx.status(400).json("Username and password must be provided.");
+                ctx.status(400);
                 return;
             }
 
@@ -124,7 +125,8 @@ public class SocialMediaController {
             if (loggedInAccount != null) {
                 ctx.status(200).json(loggedInAccount);
             } else {
-                ctx.status(401).json("Invalid username or password.");
+                // ctx.status(401).json("Invalid username or password.");
+                ctx.status(401);
             }
         } catch (Exception e) {
             ctx.status(401).json("Login failed: " + e.getMessage());
