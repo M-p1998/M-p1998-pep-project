@@ -38,17 +38,6 @@ public class AccountDAO {
             stmt.setString(1, acc.getUsername());
             stmt.setString(2, acc.getPassword());
             int affectedRows = stmt.executeUpdate();
-            // if (affectedRows == 0) {
-            //     throw new SQLException("Creating account failed, no rows affected.");
-            // }
-
-            // ResultSet generatedKeys = stmt.getGeneratedKeys() ;
-            //     if (generatedKeys.next()) {
-            //         int accountId = generatedKeys.getInt(1);
-            //         registeredAccount = new Account(accountId, acc.getUsername(),acc.getPassword());
-            //     } else {
-            //         throw new SQLException("Creating account failed");
-            //     }
 
             if(affectedRows > 0){
                 try(ResultSet generatedKeys = stmt.getGeneratedKeys()){
@@ -131,57 +120,22 @@ public class AccountDAO {
         PreparedStatement preparedStatement = null;
         Account loggedInAccount = null;
         Connection connection = ConnectionUtil.getConnection();
-
-        // try {
-        //     PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        //     preparedStatement.setString(1, acc.getUsername());
-        //     preparedStatement.setString(2, acc.getPassword());
-        //     ResultSet rs = preparedStatement.executeQuery();
-
-        //     if (rs.next()) {
-        //         int accountId = rs.getInt("account_id");
-        //         String username = rs.getString("username");
-        //         String password = rs.getString("password");
-        //         loggedInAccount = new Account(accountId, username, password);
-        //     }
-            
-        // } 
         try {
             String sql = "SELECT * FROM account WHERE username = ?";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, username);
             ResultSet rs = preparedStatement.executeQuery();
 
-            // if (resultSet.next()) {
-            //     String hashedPassword = resultSet.getString("password");
-            //     if (BCrypt.checkpw(password, hashedPassword)) {
-            //         int accountId = resultSet.getInt("account_id");
-            //         String fetchedUsername = resultSet.getString("username");
-            //         loggedInAccount = new Account(accountId, fetchedUsername, null); 
-            //     }
-            // }
             if (rs.next()) {
-                // int accountId = rs.getInt("account_id");
-                // username = rs.getString("username");
-                // password = rs.getString("password");
-                // loggedInAccount = new Account(accountId, username, password);
 
                 int accountId = rs.getInt("account_id");
                 String fetchedUsername = rs.getString("username");
                 String storedPassword = rs.getString("password"); // Assuming password is hashed in the database
 
-                // Example of password validation using BCrypt
-                // Replace this with your actual password hashing/validation mechanism
-                // if (BCrypt.checkpw(password, hashedPassword)) {
-                //     loggedInAccount = new Account(accountId, fetchedUsername, null); 
-                // } 
                 if(password.equals(storedPassword)){
                     loggedInAccount = new Account(accountId, fetchedUsername, storedPassword); 
                 }
 
-                // else {
-                //     System.out.println("Password does not match.");
-                // }
             }
 
         }

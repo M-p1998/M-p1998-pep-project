@@ -1,10 +1,9 @@
 package Controller;
 
 import java.sql.SQLException;
-import java.util.Collections;
+
 import java.util.List;
 
-import org.junit.rules.ExpectedException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -158,21 +157,6 @@ public class SocialMediaController {
     // retrieve message by user/account id
     public void getMessageByUserIdController(Context ctx){
 
-        // try {
-        //     int accountId = Integer.parseInt(ctx.pathParam("account_id"));
-        //     List<Message> msg = messageService.getMsgByUserId(accountId);
-        //     if(!msg.isEmpty()){
-        //         ctx.json(msg);
-        //         ctx.status(200);
-        //     }else{
-        //         ctx.status(200);
-        //         ctx.json(Collections.emptyList());
-        //     }
-            
-        // } catch (Exception e) {
-        //     ctx.status(200);
-        //     ctx.result("Invalid account id");
-        // }
         try {
             int accountId = Integer.parseInt(ctx.pathParam("account_id"));
             List<Message> messages = messageService.getMsgByUserId(accountId);
@@ -230,24 +214,3 @@ public class SocialMediaController {
         }
     }
 }
-// public void updateMessageTextController(Context ctx) {
-//     try {
-//         // Parse message_id from path parameter
-//         int messageId = Integer.parseInt(ctx.pathParam("message_id"));
-
-//         // Deserialize JSON body to a map or use directly if body contains just the new message text
-//         String newMessageText = ctx.body();
-
-//         // Update the message text
-//         messageService.updateMessageText(messageId, newMessageText);
-
-//         // Set HTTP response status 204 (No Content) for successful update
-//         ctx.status(204);
-//     } catch (NumberFormatException e) {
-//         // Handle invalid message_id format
-//         ctx.status(400).result("Invalid message_id");
-//     } catch (Exception e) {
-//         // Handle other exceptions
-//         ctx.status(500).result("Internal server error");
-//     }
-// }

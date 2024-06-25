@@ -52,7 +52,6 @@ public class MessageService {
         if(message.getMessage_text().length() > 255){
             throw new IllegalArgumentException("Message must be less than 255 characters.");
         }
-        // You can add additional validation here, such as checking if posted_by exists in the database
        
     }
 
@@ -72,27 +71,14 @@ public class MessageService {
 
     // get messages by user/account id
     public List<Message> getMsgByUserId(int id) throws Exception{
-        // try {
-        //     List<Message> message = msgDAO.getMessagesByUserId(id);
-        //     if(message.isEmpty()){
-        //         throw new Exception("No messages found for user/account id");
-        //     }
-        //     return message;
-        // } catch (Exception e) {
-        //     throw new Exception("Error occurred while fetching message by user/account id ", e);
-        // }
+
         return msgDAO.getMessagesByUserId(id);
     }
 
     // delete message by message id
    public void deleteMessage(Message msg) throws Exception{
         msgDAO.deleteMessageByItsId(msg);
-    // try{
-    //      message = msgDAO.deleteMessageByItsId(id);
-    //      if(message == null){
 
-    //      }
-    // }
    }
 
     // update message by message id
